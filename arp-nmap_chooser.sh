@@ -9,6 +9,10 @@ fi
 # Interfaz de red (ajústala si usas otra)
 IFACE="eth0"
 
+# Carpeta absoluta para guardar resultados (usuario kali)
+OUTPUT_DIR="/home/kali/nmap"
+mkdir -p "$OUTPUT_DIR"
+
 # Escanear red con arp-scan y filtrar IP + MAC válidas
 echo "🔍 Escaneando red con arp-scan..."
 hosts=$(arp-scan --interface="$IFACE" --localnet 2>/dev/null | \
@@ -40,10 +44,9 @@ if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -ge 0 ] && [ "$index" -lt "${#host_a
     echo "🚀 Escaneando $ip con nmap (modo rápido -T4)..."
 
     # Ejecutar escaneo y guardar resultado
-# Cambia esto, por ejemplo:
-nmap -T4 "$ip" > "$HOME/nmap/nmap_result_${ip}.txt"
+    nmap -T4 "$ip" > "${OUTPUT_DIR}/nmap_result_${ip}.txt"
 
-    echo "✅ Resultado guardado en: $HOME/nmap/nmap_result_${ip}.txt"
+    echo "✅ Resultado guardado en: ${OUTPUT_DIR}/nmap_result_${ip}.txt"
 else
     echo "❌ Selección inválida."
 fi
