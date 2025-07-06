@@ -35,7 +35,7 @@ read -p "Selecciona el número del host a escanear con nmap: " index
 if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -ge 0 ] && [ "$index" -lt "${#host_array[@]}" ]; then
     ip=$(echo "${host_array[$index]}" | awk '{print $1}')
     echo "🚀 Escaneando $ip con nmap (modo rápido -T4)..."
-    nmap -sS -T4 -Pn -n "$ip" | tee "nmap_result_$ip.txt"
+    nmap -T4 "$target_ip" > "$HOME/nmaps/nmap_result_${target_ip}.txt"
     echo "✅ Resultado guardado en: nmap_result_$ip.txt"
 else
     echo "❌ Selección inválida."
