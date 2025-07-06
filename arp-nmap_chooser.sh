@@ -14,7 +14,7 @@ echo "🔍 Escaneando red con arp-scan..."
 hosts=$(arp-scan --interface="$IFACE" --localnet | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | awk '{print $1,$2}' | sort)
 
 if [ -z "$hosts" ]; then
-  echo "⚠️ No se detectaron hosts. ¿Estás conectado a la red?"
+  echo "⚠️ No se detectaron hosts. ¿Estás conectado a la red?. Me cago en la peluca de su abuela"
   exit 1
 fi
 
