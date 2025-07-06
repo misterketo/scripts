@@ -12,6 +12,7 @@ IFACE="eth0"
 # Carpeta absoluta para guardar resultados (usuario kali)
 OUTPUT_DIR="/home/kali/nmap"
 mkdir -p "$OUTPUT_DIR"
+echo "DEBUG: OUTPUT_DIR='$OUTPUT_DIR', existe carpeta: $( [ -d "$OUTPUT_DIR" ] && echo sí || echo no )"
 
 # Escanear red con arp-scan y filtrar IP + MAC válidas
 echo "🔍 Escaneando red con arp-scan..."
