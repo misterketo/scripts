@@ -12,7 +12,7 @@ IFACE="eth0"
 # Detectar red automáticamente
 echo "🔍 Escaneando red con arp-scan..."
 hosts=$(arp-scan --interface="$IFACE" --localnet 2>/dev/null | \
-  awk '/([0-9]{1,3}\.){3}[0-9]{1,3}/ && /^[0-9]/{print $1, $2}')
+  grep -Eo "^([0-9]{1,3}\.){3}[0-9]{1,3}\s+([0-9A-Fa-f:]{17})")
 
 if [ -z "$hosts" ]; then
   echo "⚠️ No se detectaron hosts. ¿Estás conectado a la red?. Me cago en la peluca de su abuela"
