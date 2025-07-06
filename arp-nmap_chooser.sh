@@ -40,9 +40,10 @@ if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -ge 0 ] && [ "$index" -lt "${#host_a
     echo "🚀 Escaneando $ip con nmap (modo rápido -T4)..."
 
     # Ejecutar escaneo y guardar resultado
-    nmap -T4 "$ip" > "$HOME/nmaps/nmap_result_${ip}.txt"
+# Cambia esto, por ejemplo:
+nmap -T4 "$ip" > "$HOME/nmap/nmap_result_${ip}.txt"
 
-    echo "✅ Resultado guardado en: $HOME/nmaps/nmap_result_${ip}.txt"
+    echo "✅ Resultado guardado en: $HOME/nmap/nmap_result_${ip}.txt"
 else
     echo "❌ Selección inválida."
 fi
