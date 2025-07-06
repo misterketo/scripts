@@ -43,10 +43,18 @@ if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -ge 0 ] && [ "$index" -lt "${#host_a
     ip=$(echo "${host_array[$index]}" | awk '{print $1}')
     echo "🚀 Escaneando $ip con nmap (modo rápido -T4)..."
 
-    # Ejecutar escaneo y guardar resultado
-    nmap -T4 "$ip" > "${OUTPUT_DIR}/nmap_result_${ip}.txt"
+    echo "DEBUG: OUTPUT_DIR='$OUTPUT_DIR'"
+    echo "DEBUG: ip='$ip'"
 
-    echo "✅ Resultado guardado en: ${OUTPUT_DIR}/nmap_result_${ip}.txt"
+    # Ejecutar escaneo y guardar resultado
+    nmap -T4 "$ip" > "${OUTPUT_DIR}/nmap_result_${ip}.txt" 2>&1
+    status=$?
+
+    if [ $status -eq 0 ]; then
+        echo "✅ Resultado guardado en: ${OUTPUT_DIR}/nmap_result_${ip}.txt"
+    else
+        echo "❌ Error al ejecutar nmap (código $status)"
+    fi
 else
     echo "❌ Selección inválida."
 fi
