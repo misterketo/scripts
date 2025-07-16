@@ -1,0 +1,64 @@
+#!/bin/bash
+
+echo "[INFO] Comprobando estado de las VirtualBox Guest Additions..."
+
+# 1. Verificar si VBoxGuestAdditions está instalado
+if [ ! -f /usr/sbin/VBoxService ]; then
+    echo "[ERROR] VBoxService no encontrado. Las Guest Additions parecen no estar instaladas."
+    echo "Inserta el CD con Guest Additions y ejecuta VBoxLinuxAdditions.run manualmente."
+    exit 1
+fi
+
+# 2. Verificar si los módulos están cargados
+missing_modules=0
+for mod in vboxguest vboxsf vboxvideo; do
+    if ! lsmod | grep -q "$mod"; then
+        echo "[WARNING] Módulo $mod no está cargado."
+        missing_modules=$((missing_modules+1))
+    fi
+done
+
+if [ "$missing_modules" -eq 0 ]; then
+    echo "[OK] Todos los módulos de VirtualBox están cargados. Guest Additions parece estar funcionando correctamente."
+    exit 0
+fi
+
+echo "[INFO] Intentando reparar las Guest Additions..."
+
+# 3. Instalar dependencias si faltan
+echo "[INFO] Instalando dependencias..."
+sudo apt update
+sudo apt install -y build-essential dkms linux-headers-$(uname -r)
+
+# 4. Montar el CD-ROM si es necesario
+if [ ! -d /media/cdrom ]; then
+    sudo mkdir /media/cdrom
+fi
+
+echo "[INFO] Montando CD-ROM..."
+sudo mount /dev/cdrom /media/cdrom 2>/dev/null
+
+# 5. Ejecutar el instalador de Guest Additions
+if [ -f /media/cdrom/VBoxLinuxAdditions.run ]; then
+    echo "[INFO] Ejecutando VBoxLinuxAdditions.run..."
+    sudo bash /media/cdrom/VBoxLinuxAdditions.run
+else
+    echo "[ERROR] No se encontró VBoxLinuxAdditions.run en /media/cdrom."
+    exit 1
+fi
+
+# 6. Comprobar si funcionó
+echo "[INFO] Comprobando nuevamente módulos..."
+for mod in vboxguest vboxsf vboxvideo; do
+    if ! lsmod | grep -q "$mod"; then
+        echo "[ERROR] El módulo $mod aún no está cargado. Puede que se requiera reiniciar o verificar el kernel."
+    fi
+done
+
+# 7. Sugerir reinicio
+read -p "¿Deseas reiniciar ahora para aplicar los cambios? [s/N]: " respuesta
+if [[ "$respuesta" == "s" || "$respuesta" == "S" ]]; then
+    sudo reboot
+else
+    echo "[INFO] Reinicio omitido. Puede que necesites hacerlo manualmente."
+fi
