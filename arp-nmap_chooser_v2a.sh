@@ -1,3 +1,6 @@
+#paso el codigo a la siguiente version aqui tengo el fallo de no poder seleccionar el dispositivo o que lo detecte automaticamente. Si no era eth0 no sunciona.
+
+
 #!/bin/bash
 
 # Comprobar root
