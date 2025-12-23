@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Iniciar Servidor HTTP
+Comment=Inicia un servidor HTTP con Python
+Exec=xfce4-terminal --hold -e "/home/kali/Escritorio/iniciar_servidor.sh"
+Icon=utilities-terminal
+Terminal=false
+Type=Application
